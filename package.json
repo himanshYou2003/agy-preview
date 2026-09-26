@@ -1,0 +1,69 @@
+{
+  "name": "agy-preview",
+  "version": "0.1.0",
+  "description": "Open Source Visual Decision Plane & Shotgunning for AI Coding Agents (Google Antigravity, Claude Code, OpenAI Codex, Cursor)",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "bin": {
+    "agy-preview": "dist/cli.js",
+    "vdp": "dist/cli.js"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "type": "module",
+  "scripts": {
+    "build": "tsc && npm run copy:arena",
+    "copy:arena": "node -e \"const fs=require('fs'); fs.cpSync('src/arena', 'dist/arena', {recursive: true});\"",
+    "dev": "tsc -w",
+    "start": "node dist/index.js",
+    "demo": "node examples/manual-demo.js",
+    "test": "vitest run",
+    "test:coverage": "vitest run --coverage",
+    "test:watch": "vitest"
+  },
+  "keywords": [
+    "antigravity",
+    "google-antigravity",
+    "claude-code",
+    "cursor",
+    "codex",
+    "mcp",
+    "model-context-protocol",
+    "visual-decision-plane",
+    "design-shotgun",
+    "ui-preview",
+    "frontend-ai",
+    "open-source"
+  ],
+  "author": "Antigravity Open Source Community",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/himanshYou2003/agy-preview.git"
+  },
+  "homepage": "https://github.com/himanshYou2003/agy-preview#readme",
+  "bugs": {
+    "url": "https://github.com/himanshYou2003/agy-preview/issues"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.6.1",
+    "open": "^10.1.0",
+    "ws": "^8.18.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.13.9",
+    "@types/ws": "^8.5.14",
+    "@vitest/coverage-v8": "^3.2.7",
+    "typescript": "^5.8.2",
+    "vitest": "^3.0.7"
+  }
+}

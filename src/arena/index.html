@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VDP — Visual Decision Arena</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="theme-dark">
+  <!-- Top Navigation & Control Bar -->
+  <header class="top-nav">
+    <div class="nav-brand">
+      <div class="logo-mark">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+          <polyline points="2 17 12 22 22 17"></polyline>
+          <polyline points="2 12 12 17 22 12"></polyline>
+        </svg>
+      </div>
+      <div class="brand-text">
+        <span class="brand-name">VDP</span>
+        <span class="brand-sub">Decision Arena</span>
+      </div>
+    </div>
+
+    <!-- Active Task Summary -->
+    <div class="prompt-badge" id="prompt-summary" title="Prompt sent by AI agent">
+      <span class="pulse-indicator"></span>
+      <span class="prompt-text" id="prompt-text">Waiting for visual decision request...</span>
+    </div>
+
+    <!-- Controls -->
+    <div class="nav-controls">
+      <!-- Theme Switcher -->
+      <button class="icon-btn" id="theme-toggle" title="Toggle Theme (L)">
+        <svg id="moon-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+        <svg id="sun-icon" class="hidden" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+      </button>
+
+      <!-- Global Cancel Button -->
+      <button class="action-btn-ghost" id="cancel-btn" title="Cancel & Return to Agent (Esc)">
+        <span>Cancel</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Arena Container -->
+  <main class="arena-main" id="arena-main">
+    <div class="variants-grid" id="variants-grid">
+      <!-- Variants injected dynamically by app.js -->
+      <div class="empty-state">
+        <div class="spinner"></div>
+        <p>Connecting to local agent sidecar...</p>
+      </div>
+    </div>
+  </main>
+
+  <!-- Micro-Critique / Tweak Modal -->
+  <div class="modal-backdrop hidden" id="critique-modal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div class="modal-title-group">
+          <span class="badge" id="modal-archetype-badge">Editorial</span>
+          <h3 id="modal-variant-title">Refine Variant</h3>
+        </div>
+        <button class="close-btn" id="modal-close-btn">&times;</button>
+      </div>
+      <div class="modal-body">
+        <label for="critique-input" class="form-label">
+          Quick critique or hybrid instruction for the agent:
+        </label>
+        <textarea id="critique-input" class="form-textarea" placeholder="e.g. 'Use this layout, but with the rounded pill buttons from Variant A and slightly darker borders.'"></textarea>
+        
+        <!-- Live Tokens Preview inside modal -->
+        <div class="token-preview-box" id="modal-token-preview">
+          <span class="token-title">Extracted Design Tokens:</span>
+          <pre id="modal-tokens-code"><code>/* Scanning CSS tokens... */</code></pre>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" id="modal-cancel-btn">Cancel</button>
+        <button class="btn btn-primary" id="modal-submit-btn">
+          <span>Accept with Adjustments</span>
+          <span class="kbd-hint">↵</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Resolution Banner (Shows when decision is submitted) -->
+  <div class="resolved-toast hidden" id="resolved-toast">
+    <div class="toast-content">
+      <div class="toast-icon">✓</div>
+      <div class="toast-text">
+        <strong id="toast-winner-title">Variant Selected</strong>
+        <span>Decision payload sent back to AI agent. You can close this tab or keep it open.</span>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,218 @@
+# 🌐 Visual Decision Plane (`agy-preview`)
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Coverage: 100%](https://img.shields.io/badge/Coverage-100%25-brightgreen.svg)](https://github.com/himanshYou2003/agy-preview)
+[![MCP Compatible](https://img.shields.io/badge/MCP-Standard%20v1.0-blue.svg)](https://modelcontextprotocol.io)
+[![Agents](https://img.shields.io/badge/Agents-Antigravity%20%7C%20Claude%20%7C%20Codex%20%7C%20Cursor-purple.svg)](https://github.com/himanshYou2003/agy-preview)
+
+> **Visual Decision Infrastructure & Live Archetype Shotgunning for AI Coding Agents.**  
+> Stop letting AI hallucinate CSS in terminal text. Preview 3–4 interactive archetypes in a browser arena, test responsive viewports, extract `:root` design tokens, and commit code with visual conviction.
+
+---
+
+## ⚡ Why `agy-preview`?
+
+When AI coding agents (Antigravity, Claude Code, Codex, Cursor) design frontend components, they typically guess styling in prose or generate code blindly without human visual confirmation.
+
+**Visual Decision Plane (VDP)** provides a standardized **Model Context Protocol (MCP)** tool that bridges terminal agents with a real browser sandbox:
+1. **Visual Shotgunning:** Agent formulates 3–4 distinct design archetypes (e.g. *Minimalist Monochrome*, *Warm Editorial*, *Glassmorphic*, *Neo-Brutalist*).
+2. **Instant Browser Arena:** Agent calls `request_visual_decision` and holds the execution promise. A local browser arena launches automatically.
+3. **Interactive Inspection:** Test live hover states, switch dark/light modes, and toggle viewport sizes (**Desktop**, **Tablet**, **Mobile**).
+4. **AST Design Token Extraction:** Clicking "Select" parses `:root` CSS variables and returns them to the agent to enforce repo-wide consistency.
+
+---
+
+## 🚀 10-Second Quickstart
+
+In any project repository, run:
+
+```bash
+npx agy-preview init
+```
+
+This single command automatically configures:
+- ✅ **Google Antigravity**: Registers MCP server in `mcp_config.json`, adds `/visual-shotgun` skill and rule.
+- ✅ **Claude Code & Desktop**: Registers MCP server in `.claude.json` and updates `CLAUDE.md`.
+- ✅ **Cursor & Codex**: Registers MCP server in `.cursor/mcp.json` and updates `.cursorrules`.
+
+---
+
+## 🎮 Try the Interactive Arena Demo
+
+Want to see how the arena feels before configuring your AI agent? Run:
+
+```bash
+npx agy-preview demo
+```
+
+This boots the local HTTP & WebSocket server, opens your browser with 3 real design archetypes, and lets you test responsive viewports, dark/light modes, and archetype selection!
+
+---
+
+## 🛠 Integration Guides
+
+### 1. Google Antigravity (AGY)
+
+1. Run the initializer:
+   ```bash
+   npx agy-preview init
+   ```
+2. Reload or restart your Antigravity agent session.
+3. Use the `/visual-shotgun` slash command or ask:
+   > *"Design a modern SaaS analytics dashboard with 3 distinct archetypes."*
+4. Antigravity will invoke the `request_visual_decision` tool and pause while opening the preview in your browser!
+
+### 2. Claude Code & Claude Desktop
+
+#### Claude Code (CLI)
+Add the MCP server directly:
+```bash
+claude mcp add agy-preview npx -y agy-preview
+```
+
+#### Claude Desktop
+Add to your `claude_desktop_config.json`:
+```json
+{
+  "mcpServers": {
+    "agy-preview": {
+      "command": "npx",
+      "args": ["-y", "agy-preview"]
+    }
+  }
+}
+```
+
+### 3. Cursor & OpenAI Codex
+
+Add to your project's `.cursor/mcp.json`:
+```json
+{
+  "mcpServers": {
+    "agy-preview": {
+      "command": "npx",
+      "args": ["-y", "agy-preview"]
+    }
+  }
+}
+```
+
+---
+
+## 📐 Architecture & Security Model
+
+```
+┌────────────────────────────────────────────────────────┐
+│  AI Coding Agent (Antigravity / Claude / Cursor)       │
+└───────────────────────────┬────────────────────────────┘
+                            │ MCP stdio (JSON-RPC)
+┌───────────────────────────▼────────────────────────────┐
+│  VDP MCP Engine (agy-preview)                          │
+│  - Dynamic Port Scanner (4200..4210)                   │
+│  - Native HTTP Asset Server                            │
+│  - Bidirectional WebSocket Gateway (15s Heartbeat)     │
+└───────────────────────────┬────────────────────────────┘
+                            │ http://127.0.0.1:4200
+┌───────────────────────────▼────────────────────────────┐
+│  Visual Decision Arena (Local Browser)                 │
+│  ┌─────────────────┐ ┌─────────────────┐ ┌───────────┐ │
+│  │ Iframe Variant A│ │ Iframe Variant B│ │ Variant C │ │
+│  │ (Sandboxed CSP) │ │ (Sandboxed CSP) │ │(Sandboxed)│ │
+│  └─────────────────┘ └─────────────────┘ └───────────┘ │
+│  - Viewport Toggles: Desktop (100%), Tablet (768px),   │
+│    Mobile (375px)                                      │
+│  - Token Inspector: Extracts :root CSS variables       │
+│  - Theme Switcher: Dark / Light background mode        │
+└────────────────────────────────────────────────────────┘
+```
+
+### 🔒 Enterprise Sandboxing
+Untrusted code generated by AI is completely isolated:
+- Preview iframes run with `sandbox="allow-scripts"` (**without** `allow-same-origin`).
+- Strict CSP headers (`connect-src 'none'`) prevent malicious network exfiltration or cookie/localStorage theft.
+- Parent arena communicates strictly via origin-validated `window.postMessage`.
+
+---
+
+## 📊 MCP Tool Specification
+
+### `request_visual_decision`
+
+Presents an interactive side-by-side visual preview of multiple UI design variants in a local browser sandbox and waits for user selection.
+
+#### Input Schema
+```json
+{
+  "prompt": "Description of the UI component to decide",
+  "context": "Optional project constraints (e.g. React/Tailwind)",
+  "variants": [
+    {
+      "id": "variant-a",
+      "name": "Linear Minimalist",
+      "archetype": "minimalist",
+      "description": "Monochrome precision, subtle 1px zinc borders",
+      "html": "<div class=\"card\">Hello</div>",
+      "css": ":root { --primary: #3b82f6; } .card { padding: 16px; }"
+    }
+  ],
+  "timeoutMs": 600000
+}
+```
+
+#### Output Schema
+```json
+{
+  "status": "selected",
+  "selectedId": "variant-a",
+  "feedback": "Approved. Increase button padding on mobile.",
+  "tokens": {
+    "colors": { "primary": "#3b82f6" },
+    "typography": {},
+    "radii": {},
+    "cssVariables": ":root {\n  --primary: #3b82f6;\n}"
+  },
+  "rawHtml": "<div class=\"card\">Hello</div>",
+  "rawCss": ":root { --primary: #3b82f6; } .card { padding: 16px; }"
+}
+```
+
+---
+
+## 🧪 Testing & Verification
+
+`agy-preview` is engineered with senior software QA standards and maintains **100% strict test coverage** across all modules:
+
+```bash
+# Run tests
+npm test
+
+# Run tests with 100% coverage verification
+npm run test:coverage
+```
+
+```
+ % Coverage report from v8
+-------------------|---------|----------|---------|---------|-------------------
+File               | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s 
+-------------------|---------|----------|---------|---------|-------------------
+All files          |     100 |      100 |     100 |     100 |                   
+ src               |     100 |      100 |     100 |     100 |                   
+  cli.ts           |     100 |      100 |     100 |     100 |                   
+ src/protocol      |     100 |      100 |     100 |     100 |                   
+  validator.ts     |     100 |      100 |     100 |     100 |                   
+ src/server        |     100 |      100 |     100 |     100 |                   
+  ...r-launcher.ts |     100 |      100 |     100 |     100 |                   
+  http-server.ts   |     100 |      100 |     100 |     100 |                   
+  mcp-server.ts    |     100 |      100 |     100 |     100 |                   
+  port-scanner.ts  |     100 |      100 |     100 |     100 |                   
+  ws-gateway.ts    |     100 |      100 |     100 |     100 |                   
+ src/tokens        |     100 |      100 |     100 |     100 |                   
+  ...-extractor.ts |     100 |      100 |     100 |     100 |                   
+-------------------|---------|----------|---------|---------|-------------------
+```
+
+---
+
+## 📄 License
+
+MIT © [Himanshu & Visual Decision Plane Contributors](LICENSE)

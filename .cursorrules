@@ -1,0 +1,7 @@
+
+# Visual Decision Rule (UI & Frontend — Senior UI/UX Standard)
+When designing UI components, websites, or dashboards, call the MCP tool `request_visual_decision` with 3-4 archetypes.
+When building websites or pages, NEVER generate a lone isolated card in an empty void; always build a complete, multi-section responsive layout (Nav, Hero, Features, Metrics, CTA, Footer).
+STRICT MULTI-DEVICE INVARIANT: Every variant must be 100% responsive and properly fitted to ALL device viewports: Fluid (Desktop 100%), Laptop (1280px), Tablet (768px), and Mobile (375px), with zero horizontal overflow.
+DESIGN-DEPENDENT DARK & LIGHT MODE: Dark mode and light mode must strictly depend on the website's unique design aesthetic (e.g. warm espresso for editorial dark mode, clean slate for minimalist light mode, cyber black/neon for brutalist dark mode). Declare both `.theme-dark` and `.theme-light` CSS variables.
+Wait for user selection in the Visual Decision Arena or Device Studio before generating frontend production files.
