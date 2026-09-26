@@ -1,6 +1,6 @@
 {
   "name": "agy-preview",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Open Source Visual Decision Plane & Shotgunning for AI Coding Agents (Google Antigravity, Claude Code, OpenAI Codex, Cursor)",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -42,7 +42,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/himanshYou2003/agy-preview.git"
+    "url": "git+https://github.com/himanshYou2003/agy-preview.git"
   },
   "homepage": "https://github.com/himanshYou2003/agy-preview#readme",
   "bugs": {
